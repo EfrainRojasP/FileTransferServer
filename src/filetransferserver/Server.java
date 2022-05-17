@@ -4,7 +4,6 @@
  */
 package filetransferserver;
 
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
@@ -24,15 +23,23 @@ public class Server {
    private static DataInputStream dataInputStream = null;
 
    public static void main(String[] args) {
+
+      System.out.println("Tam integer " + Integer.MAX_VALUE);
+
       try (ServerSocket serverSocket = new ServerSocket(5000)) {
-         System.out.println("listening to port:5000");
+         //Abrimos el socket en el puereto 5000 del localhot y esperamos
+         //a que llegue un cliente
+         System.out.println("Escuchando en el puerto:5000");
+         //Acpectamos al cliente
          Socket clientSocket = serverSocket.accept();
-         System.out.println(clientSocket + " connected.");
+         System.out.println("Cliente: " + "\n\t" + clientSocket + " conectado.");
+
+         //Inicializamos el flujo de entrada y de salida
          dataInputStream = new DataInputStream(clientSocket.getInputStream());
          dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
-         receiveFile("NewFile1.pdf");
-         receiveFile("NewFile2.pdf");
+         //Recibimos el archivo y lo nombramos
+         receiveFile("a.txt");
 
          dataInputStream.close();
          dataOutputStream.close();
@@ -43,14 +50,23 @@ public class Server {
    }
 
    private static void receiveFile(String fileName) throws Exception {
+
+      /*
+      byte[] buffer = new byte[Integer.MAX_VALUE];
+      int bytes = dataInputStream.read(buffer,0,buffer.length);
+      fileOutputStream = new FileOutputStream(newFileName);
+      fileOutputStream.write(buffer,0,bytes);
+       */
       int bytes = 0;
       FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 
-      long size = dataInputStream.readLong();     // read file size
+      //Leemos el tamaño del archivo
+      long size = dataInputStream.readLong();
       byte[] buffer = new byte[4 * 1024];
       while (size > 0 && (bytes = dataInputStream.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
          fileOutputStream.write(buffer, 0, bytes);
-         size -= bytes;      // read upto file size
+         // Leemos hasta que se envie el archivo por completo
+         size -= bytes;
       }
       fileOutputStream.close();
    }
