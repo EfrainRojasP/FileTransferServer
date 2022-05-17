@@ -13,6 +13,7 @@ import java.net.Socket;
 /**
  *
  * @author Rojas Piña Efrain Ulises <al2172001457@azc.uam.mx>
+ * Fuente: https://heptadecane.medium.com/file-transfer-via-java-sockets-e8d4f30703a5
  */
 public class Server {
 
