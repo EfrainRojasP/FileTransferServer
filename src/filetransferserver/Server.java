@@ -40,7 +40,7 @@ public class Server {
          dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
          //Recibimos el archivo y lo nombramos
-         receiveFile("a.txt");
+         receiveFile("HolaRecibido.txt");
 
          dataInputStream.close();
          dataOutputStream.close();

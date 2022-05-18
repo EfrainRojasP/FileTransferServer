@@ -1,0 +1,53 @@
+ahbdjkhasjdjksadjjdjkasdnsad
+dasmkdsmad
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package test;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.text.PDFTextStripper;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+/**
+ *
+ * @author Zerol
+ */
+public class readDoc {
+    public static void main(String[] args) throws IOException {
+        File file = new File("testeo.pdf");
+        PDDocument document = PDDocument.load(file);
+
+        System.out.println("PDF loaded");
+        PDFTextStripper pdfTextStripper = new PDFTextStripper();
+
+        String text = pdfTextStripper.getText(document);
+        String text2 = pdfTextStripper.getParagraphEnd();
+        System.out.println(text2);
+        StringTokenizer stringTokenizer = new StringTokenizer(text, "\n");
+        int i = 1;
+        while (stringTokenizer.hasMoreTokens()){
+            String token = stringTokenizer.nextToken().trim();
+            if(chequeo(token)){
+                System.out.println("Token " + i + " : "+token);
+                i++;
+            }
+        }
+        System.out.println(text);
+        document.addPage(new PDPage());
+        document.save("Titulo 2.pdf");
+
+        document.close();
+    }
+    public static boolean chequeo(String check){
+        if (check.equals("Introducción")) return true;
+        if (check.equals("Justificación")) return true;
+        if (check.equals("Objetivos")) return true;
+        return check.equals("Referencias");
+    }
+}
